@@ -1,3 +1,6 @@
+/*
+* 单词搜索
+*/
 #include <iostream>
 #include <vector>
 #include <string>
