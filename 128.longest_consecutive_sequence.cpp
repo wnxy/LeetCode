@@ -4,30 +4,36 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_set>
 
 using namespace std;
 
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        int max_count = 1, len = nums.size();
+        int len = nums.size();
         if(len < 2) return len;
-        sort(nums.begin(), nums.end());
-        int tmp_count = 1;
-        for(int i = 1; i < len; ++i)
+        unordered_set<int> nums_set;
+        for(const int &num : nums)
         {
-            if(nums[i] == nums[i-1] + 1)
-            {
-                ++tmp_count;
-            }
-            else
-            {
-                max_count = (tmp_count > max_count?tmp_count:max_count);
-                tmp_count = 1;
-            }
+            nums_set.emplace(num);
         }
-        
-        return max_count > tmp_count?max_count:tmp_count;
+        int cur_num, cur_count = 1, longest_count = 0;
+        for(const int &num : nums_set)
+        {
+            if(!nums_set.count(num - 1))
+            {
+                cur_num = num;
+                while(nums_set.count(cur_num + 1))
+                {
+                    ++cur_count;
+                    ++cur_num;
+                }
+            }
+            longest_count = max(cur_count, longest_count);
+            cur_count = 1;
+        }
+        return longest_count;
     }
 };
 
