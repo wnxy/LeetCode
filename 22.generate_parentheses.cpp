@@ -75,7 +75,7 @@ public:
 
 int main()
 {
-    Solution3 solution;
+    Solution solution;
     vector<string> res = solution.generateParenthesis(2);
     return 0;
 }

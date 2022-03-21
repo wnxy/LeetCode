@@ -26,7 +26,7 @@ public:
         heap.emplace(1);
         dict[1] = 1;
         int res = 1;
-        for(int i = 2; i <= n; ++i)
+        for(int i = 1; i <= n; ++i)
         {
             res = heap.top();
             heap.pop();
