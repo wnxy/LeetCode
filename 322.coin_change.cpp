@@ -22,7 +22,6 @@ public:
         dp[0] = 0;
         for(int i = 1; i <= amount; ++i)
         {
-            //dp[i] = 
             for(int k : coins)
             {
                 if(k <= i)
