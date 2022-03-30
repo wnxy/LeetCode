@@ -70,7 +70,7 @@ public:
         TreeNode* root = new TreeNode(stoi(nodes[0]));
         queue<TreeNode* > q;
         q.push(root);
-        for(int i = 1; i < data.length();)
+        for(int i = 1; i < nodes.length();)
         {
             auto node = q.front();
             q.pop();
