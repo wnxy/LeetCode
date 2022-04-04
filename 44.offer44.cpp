@@ -26,6 +26,9 @@ public:
 int main()
 {
     int n = 1000000000;
+    unsigned int a = 0;
+    unsigned int b = 1;
+    
     Solution solution;
     cout << solution.findNthDigit(n) << endl;
     return 0;
