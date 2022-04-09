@@ -40,84 +40,54 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        if(root == nullptr) return "";
-        string res = "";
-        queue<TreeNode *> q;
-        q.push(root);
-        while(!q.empty())
-        {
-            auto node = q.front();
-            q.pop();
-           if(node != nullptr)
-           {
-               res.append(to_string(node->val)).append(sep);
-               q.push(node->left);
-               q.push(node->right);
-           }
-           else
-           {
-               res.append(invalid).append(sep);
-           }
-        }
-        cout << "res = " << res << endl;
-        return res;
+        if(root == nullptr) return "#,";
+        string serial = to_string(root->val) + "," + serialize(root->left) + serialize(root->right);
+        //cout << serial << endl;
+        return serial;
     }
 
     // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
         if(data.empty()) return nullptr;
-        vector<string> nodes = split(data, sep);
-        TreeNode* root = new TreeNode(stoi(nodes[0]));
-        queue<TreeNode* > q;
-        q.push(root);
-        for(int i = 1; i < nodes.length();)
+        queue<string> seq = splitStr(data, ',');
+        return deserialize(seq);
+    }
+
+    TreeNode* deserialize(queue<string>& s)
+    {
+        if(s.empty())
         {
-            auto node = q.front();
-            q.pop();
-            string left = nodes[i++];
-            if(left != invalid)
-            {
-                node->left = new TreeNode(stoi(left));
-                q.push(node->left);
-            }
-            else
-            {
-                node->left = nullptr;
-            }
-            string right = nodes[i++];
-            if(right != invalid)
-            {
-                node->right = new TreeNode(stoi(right));
-                q.push(node->right);
-            }
-            else
-            {
-                node->right = nullptr;
-            }
+            return nullptr;
         }
+        string str = s.front();
+        s.pop();
+        if(str == "#")
+        {
+            return nullptr;
+        }
+        TreeNode* root = new TreeNode(stoi(str));
+        root->left = deserialize(s);
+        root->right = deserialize(s);
         return root;
     }
 
-private:
-    vector<string> split(const string& str, const string& pattern)
+    // 以字符c为分隔符分割字符串s
+    queue<string> splitStr(string& s, char c)
     {
-        if(str.empty()) return {};
-        string strs = str;
-        //if(str.back() != pattern.back()) strs.append(pattern);
-        vector<string> res;
-        auto pos = strs.find(pattern);
-        while(pos != strs.npos)   // 查找成功
+        if(s.empty()) return {};
+        queue<string> res;
+        int start = 0, pos = 0;
+        while(pos < s.length())
         {
-            string tmp = strs.substr(0, pos);
-            res.emplace_back(tmp);
-            strs = strs.substr(pos + 1, strs.length());
-            pos = strs.find(pattern);
+            pos = s.find(c, start);
+            if(pos != s.npos)
+            {
+                res.emplace(s.substr(start, pos - start));
+            }
+            start = pos + 1;
         }
         return res;
     }
-
-private:
-    string invalid = "#", sep = ",";
 };
 
 // Your Codec object will be instantiated and called as such:
@@ -126,7 +96,7 @@ private:
 
 int main()
 {
-    string str = "1,2,3,#,#,4,5,#,#,#,#,";
+    string str = "1,2,#,#,3,4,#,#,5,#,#,";
     Codec codec;
     TreeNode *root = codec.deserialize(str);
     return 0;
