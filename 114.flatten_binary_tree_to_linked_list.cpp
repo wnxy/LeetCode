@@ -130,6 +130,33 @@ public:
     }
 };
 
+class Solution3 {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* cur = root;
+        while(cur != nullptr)
+        {  
+            if(cur->left != nullptr)
+            {
+                TreeNode* right = cur->right;
+                TreeNode* left = cur->left;
+                TreeNode* pre = left;
+                if(pre != nullptr)
+                {
+                    while(pre->right != nullptr)
+                    {
+                        pre = pre->right;
+                    }
+                }
+                cur->right = left;
+                cur->left = nullptr;
+                pre->right = right;
+            }
+            cur = cur->right; 
+        }
+    }
+};
+
 void printBinaryValueBFS(TreeNode *root)
 {
     queue<TreeNode *>q;
@@ -158,7 +185,7 @@ void printBinaryValueBFS(TreeNode *root)
 
 int main()
 {
-    Solution2 solution;
+    Solution3 solution;
     TreeNode *root = new TreeNode(1);
     auto node1 = new TreeNode(2);
     auto node2 = new TreeNode(3);
