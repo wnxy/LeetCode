@@ -94,182 +94,183 @@
 */
 // input [1,2,3,1,null,2,null,null,null,1,null,null,null]
 // output [2,1,null]
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <unordered_map>
-using namespace std;
+// #include <iostream>
+// #include <vector>
+// #include <queue>
+// #include <string>
+// #include <unordered_map>
+// using namespace std;
 
-struct TreeNode
-{
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(): val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x): val(x), left(nullptr), right(nullptr) {} 
-};
+// struct TreeNode
+// {
+//     int val;
+//     TreeNode* left;
+//     TreeNode* right;
+//     TreeNode(): val(0), left(nullptr), right(nullptr) {}
+//     TreeNode(int x): val(x), left(nullptr), right(nullptr) {} 
+// };
 
-/**
- * @brief 字符串分割
- * 
- * @param str 
- * @param c 
- * @return vector<string> 
- */
-vector<string> splitStr(string& str, char c)
-{
-    if(str.empty()) return {};
-    vector<string> res;
-    int pos = 0, start = 0;
-    while(pos < str.size())
-    {
-        pos = str.find(c, start);
-        if(pos != str.npos)
-        {
-            res.emplace_back(str.substr(start, pos - start));
-            start = pos + 1;
-        }
-    }
-    return res;
-}
+// /**
+//  * @brief 字符串分割
+//  * 
+//  * @param str 
+//  * @param c 
+//  * @return vector<string> 
+//  */
+// vector<string> splitStr(string& str, char c)
+// {
+//     if(str.empty()) return {};
+//     vector<string> res;
+//     int pos = 0, start = 0;
+//     while(pos < str.size())
+//     {
+//         pos = str.find(c, start);
+//         if(pos != str.npos)
+//         {
+//             res.emplace_back(str.substr(start, pos - start));
+//             start = pos + 1;
+//         }
+//     }
+//     return res;
+// }
 
-/**
- * @brief 前序遍历序列化二叉树+哈希表判断重复子树
- * 
- * @param root 
- * @param res 
- * @param umap 
- * @return string 
- */
-string dfs(TreeNode* root, vector<TreeNode*>& res, unordered_map<string, int>& umap)
-{
-    if(root == nullptr) return "#,";
-    string serial = to_string(root->val) + "," + dfs(root->left, res, umap) + dfs(root->right, res, umap);
-    if(umap[serial] == 1)
-    {
-        if(root->left != nullptr || root->right != nullptr)
-        {
-            res.emplace_back(root);
-        }
-    }
-    umap[serial]++;
-    return serial;
-}
+// /**
+//  * @brief 前序遍历序列化二叉树+哈希表判断重复子树
+//  * 
+//  * @param root 
+//  * @param res 
+//  * @param umap 
+//  * @return string 
+//  */
+// string dfs(TreeNode* root, vector<TreeNode*>& res, unordered_map<string, int>& umap)
+// {
+//     if(root == nullptr) return "#,";
+//     string serial = to_string(root->val) + "," + dfs(root->left, res, umap) + dfs(root->right, res, umap);
+//     if(umap[serial] == 1)
+//     {
+//         if(root->left != nullptr || root->right != nullptr)
+//         {
+//             res.emplace_back(root);
+//         }
+//     }
+//     umap[serial]++;
+//     return serial;
+// }
 
-/**
- * @brief 寻找给定树的相同子树
- * 
- * @param root 
- * @return TreeNode* 
- */
-TreeNode* equalSubTree(TreeNode* root)
-{
-    if(root == nullptr) return nullptr;
-    vector<TreeNode*> res;
-    unordered_map<string, int> umap;
-    dfs(root, res, umap);
-    return res[0];
-}
+// /**
+//  * @brief 寻找给定树的相同子树
+//  * 
+//  * @param root 
+//  * @return TreeNode* 
+//  */
+// TreeNode* equalSubTree(TreeNode* root)
+// {
+//     if(root == nullptr) return nullptr;
+//     vector<TreeNode*> res;
+//     unordered_map<string, int> umap;
+//     dfs(root, res, umap);
+//     return res[0];
+// }
 
-/**
- * @brief 根据层序遍历的结果构建一颗二叉树
- * 
- * @param s 
- * @return TreeNode* 
- */
-TreeNode* deSerialTree(string &s)
-{
-    if(s.empty()) return nullptr;
-    vector<string> seq = splitStr(s, ',');
-    TreeNode* root = new TreeNode(stoi(seq[0]));
-    queue<TreeNode*> q;
-    q.push(root);
-    for(int i = 1; i < seq.size(); )
-    {
-        auto node = q.front();
-        q.pop();
-        string left = seq[i];
-        if(left != "null")
-        {
-            node->left = new TreeNode(stoi(left));
-            q.push(node->left);
-        }
-        else
-        {
-            node->left = nullptr;
-        }
-        ++i;
-        string right = seq[i];
-        if(right != "null")
-        {
-            node->right = new TreeNode(stoi(right));
-            q.push(node->right);
-        }
-        else
-        {
-            node->right = nullptr;
-        }
-        ++i;
-    }
-    return root;
-}
+// /**
+//  * @brief 根据层序遍历的结果构建一颗二叉树
+//  * 
+//  * @param s 
+//  * @return TreeNode* 
+//  */
+// TreeNode* deSerialTree(string &s)
+// {
+//     if(s.empty()) return nullptr;
+//     vector<string> seq = splitStr(s, ',');
+//     TreeNode* root = new TreeNode(stoi(seq[0]));
+//     queue<TreeNode*> q;
+//     q.push(root);
+//     for(int i = 1; i < seq.size(); )
+//     {
+//         auto node = q.front();
+//         q.pop();
+//         string left = seq[i];
+//         if(left != "null")
+//         {
+//             node->left = new TreeNode(stoi(left));
+//             q.push(node->left);
+//         }
+//         else
+//         {
+//             node->left = nullptr;
+//         }
+//         ++i;
+//         string right = seq[i];
+//         if(right != "null")
+//         {
+//             node->right = new TreeNode(stoi(right));
+//             q.push(node->right);
+//         }
+//         else
+//         {
+//             node->right = nullptr;
+//         }
+//         ++i;
+//     }
+//     return root;
+// }
 
-/**
- * @brief 层序遍历打印树的节点
- * 
- * @param root 
- */
-void printTree(TreeNode* root)
-{
-    cout << "[";
-    vector<string> level;
-    if(root == nullptr)
-    {
-        return;
-    }
-    queue<TreeNode*> q;
-    q.push(root);
-    while(!q.empty())
-    {
-        auto node = q.front();
-        q.pop();
-        if(node != nullptr)
-        {
-            level.emplace_back(to_string(node->val));
-            q.push(node->left);
-            q.push(node->right);
-        }
-        else
-        {
-            level.emplace_back("null");
-        }
-    }
-    level.pop_back();   // 去掉末尾序列中的两个空节点
-    level.pop_back();   // 去掉末尾序列中的两个空节点
-    for(int i = 0; i < level.size(); ++i)
-    {
-        cout << level[i];
-        if(i != level.size() - 1)
-        {
-            cout << ",";
-        }
-    }
-    cout << "]" << endl;
-}
+// /**
+//  * @brief 层序遍历打印树的节点
+//  * 
+//  * @param root 
+//  */
+// void printTree(TreeNode* root)
+// {
+//     cout << "[";
+//     vector<string> level;
+//     if(root == nullptr)
+//     {
+//         return;
+//     }
+//     queue<TreeNode*> q;
+//     q.push(root);
+//     while(!q.empty())
+//     {
+//         auto node = q.front();
+//         q.pop();
+//         if(node != nullptr)
+//         {
+//             level.emplace_back(to_string(node->val));
+//             q.push(node->left);
+//             q.push(node->right);
+//         }
+//         else
+//         {
+//             level.emplace_back("null");
+//         }
+//     }
+//     level.pop_back();   // 去掉末尾序列中的两个空节点
+//     level.pop_back();   // 去掉末尾序列中的两个空节点
+//     for(int i = 0; i < level.size(); ++i)
+//     {
+//         cout << level[i];
+//         if(i != level.size() - 1)
+//         {
+//             cout << ",";
+//         }
+//     }
+//     cout << "]" << endl;
+// }
 
-int main()
-{
-    string str;
-    cin >> str;
-    str.pop_back();    // 去掉末尾']'
-    str = str.substr(1, str.length());    // 去掉开始'['
-    str.push_back(',');
-    TreeNode* root = deSerialTree(str);
+// int main()
+// {
+//     string str;
+//     cin >> str;
+//     str.pop_back();    // 去掉末尾']'
+//     str = str.substr(1, str.length());    // 去掉开始'['
+//     str.push_back(',');
+//     TreeNode* root = deSerialTree(str);
 
-    printTree(equalSubTree(root));
+//     printTree(equalSubTree(root));
 
-    return 0;
-}
+//     return 0;
+// }
 
 // P2 100%
 // 5 5
@@ -333,3 +334,63 @@ int main()
 //     system("pause");
 //     return 0;
 // }
+
+
+
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<vector<int>> edges;
+vector<int> indegree;
+
+bool helper(int numCourse, vector<vector<int>>& pre)
+{
+    if(pre.empty()) return true;
+    // 邻接表存储图，统计节点的入度
+    for(const auto &info: pre)
+    {
+        edges[info[1]].push_back(info[0]);
+        ++indegree[info[0]];
+    }
+    queue<int> q;
+    int visited = 0;
+    // 将节点入度为0的点加入队列
+    for(int i = 0; i < numCourse; ++i)
+    {
+        if(indegree[i] == 0)
+        {
+            q.push(i);
+        }
+    }
+    while(!q.empty())
+    {
+        int node = q.front();
+        ++visited;
+        q.pop();
+        for(int n: edges[node])
+        {
+            --indegree[n];
+            if(indegree[n] == 0)
+            {
+                q.push(n);
+            }
+        }
+    }
+    return visited == numCourse;
+}
+
+int main()
+{
+    int numCourse = 2;
+    vector<vector<int>> pre = {{1, 0}};
+    //cin >> numCourse;
+    //pre.resize(numCourse);
+    
+    edges.resize(numCourse);
+    indegree.resize(numCourse);
+    cout << helper(numCourse, pre) << endl;
+    return 0;
+}
