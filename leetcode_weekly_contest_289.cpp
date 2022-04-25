@@ -104,6 +104,7 @@ public:
         int res = 0;
         for(auto it: dic)
         {
+            if(it.second < 2) return -1;
             res += ceil(static_cast<double>(it.second) / 3);
         }
         return res;
