@@ -172,29 +172,23 @@ using namespace std;
 
 class Solution {
 public:
-    int help(string &s, int left, int right)
-    {
-
-    }
-
     long long appealSum(string s) {
-        long long res = 0;
-        int len = s.length();
-        if(len < 2) return 1;
-        int subLen = 1;
-        for(int i = 0; i < len; ++i)
+        long long res = 0, sum = 0;
+        vector<int> pos(26, -1);
+        for(int i = 0; i < s.length(); ++i)
         {
-            for(int j = i; j < len; ++j)
-            {
-
-            }
+            int loc = s[i] - 'a';
+            sum += pos[loc] < 0? i + 1: i - pos[loc];
+            res += sum;
+            pos[loc] = i;
         }
+        return res;
     }
 };
 
 int main()
 {
-    string s = "abbca";
+    string s = "aba";
     Solution solution;
     long long res = solution.appealSum(s);
     cout << res << endl;
