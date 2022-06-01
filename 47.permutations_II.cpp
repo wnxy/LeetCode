@@ -26,11 +26,15 @@ public:
         }
         for(decltype(nums.size()) i = begin; i < nums.size(); ++i)
         {
-            if(used[i] == 1 || (i > begin && nums[i] == nums[i - 1] && !used[i - 1])) 
+            if(used[i] == 1) 
                 continue;
+            if(i > begin && nums[i] == nums[i - 1] && !used[i - 1])
+            {
+                return;
+            }
             track.emplace_back(nums[i]);
             used[i] = 1;
-            backTrack(nums, track, used, i);
+            backTrack(nums, track, used, 0);
             track.pop_back();
             used[i] = 0;
         }
