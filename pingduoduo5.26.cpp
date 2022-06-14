@@ -77,69 +77,69 @@ output:
 // }
 
 // 第二题 搭积木
-#include <iostream>
-#include <vector>
-#include <string>
-#include <set>
-#include <unordered_map>
-#include <algorithm>
-using namespace std;
+// #include <iostream>
+// #include <vector>
+// #include <string>
+// #include <set>
+// #include <unordered_map>
+// #include <algorithm>
+// using namespace std;
 
-bool compare(vector<int>& lhs, vector<int>& rhs)
-{
-    if(!lhs.empty() && !rhs.empty())
-    {
-        return lhs.back() > rhs.back();
-    }
-    return false;
-}
+// bool compare(vector<int>& lhs, vector<int>& rhs)
+// {
+//     if(!lhs.empty() && !rhs.empty())
+//     {
+//         return lhs.back() > rhs.back();
+//     }
+//     return false;
+// }
 
-string helper(int n, int m, vector<vector<int>>& heap)
-{
-    int cnt = 0;
-    sort(heap.begin(), heap.end(), compare);
-    for(int i = 1; i < m; ++i)
-    {
-        if(heap[i].back() == heap[i - 1].back())
-        {
-            heap[i].pop_back();
-            heap[i - 1].pop_back();
-            sort(heap.begin(), heap.end(), compare);
-            cnt += 2;
-        }
-    }
-    if(cnt == 2 * n)
-    {
-        return "yes";
-    }
-    return "no";
-}
+// string helper(int n, int m, vector<vector<int>>& heap)
+// {
+//     int cnt = 0;
+//     sort(heap.begin(), heap.end(), compare);
+//     for(int i = 1; i < m; ++i)
+//     {
+//         if(heap[i].back() == heap[i - 1].back())
+//         {
+//             heap[i].pop_back();
+//             heap[i - 1].pop_back();
+//             sort(heap.begin(), heap.end(), compare);
+//             cnt += 2;
+//         }
+//     }
+//     if(cnt == 2 * n)
+//     {
+//         return "yes";
+//     }
+//     return "no";
+// }
 
-int main()
-{
-    int T;
-    cin >> T;
-    for(int i = 0; i < T; ++i)
-    {
-        int n, m;
-        cin >> n >> m;
-        //unordered_map<int, vector<int>> dic;
-        vector<vector<int>> heap;
-        for(int j = 0; j < m; ++j)
-        {
-            int cnt;
-            cin >> cnt;
-            vector<int> tmp(cnt);
-            for(int k = 0; k < cnt; ++k)
-            {
-                cin >> tmp[k];
-            }
-            heap.emplace_back(tmp);
-        }
-        cout << helper(n, m, heap) << endl;
-    }
-    return 0;
-}
+// int main()
+// {
+//     int T;
+//     cin >> T;
+//     for(int i = 0; i < T; ++i)
+//     {
+//         int n, m;
+//         cin >> n >> m;
+//         //unordered_map<int, vector<int>> dic;
+//         vector<vector<int>> heap;
+//         for(int j = 0; j < m; ++j)
+//         {
+//             int cnt;
+//             cin >> cnt;
+//             vector<int> tmp(cnt);
+//             for(int k = 0; k < cnt; ++k)
+//             {
+//                 cin >> tmp[k];
+//             }
+//             heap.emplace_back(tmp);
+//         }
+//         cout << helper(n, m, heap) << endl;
+//     }
+//     return 0;
+// }
 
 // 第三题
 // #include <iostream>
@@ -211,3 +211,57 @@ int main()
 //     cout << res << endl;
 //     return 0;
 // }
+
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<vector<int>>& A, vector<vector<int>>& B)
+{
+    int n = A.size();
+    int res = 0;
+    
+    for(int i = -(n - 1); i < n; ++i)
+    {
+        for(int j = -(n - 1); j < n; ++j)
+        {
+            int tmp = 0;
+            for(int ii = 0; ii < n; ++ii)
+            {
+                for(int jj = 0; jj < n; ++jj)
+                {
+                    int dx = ii + i, dy = jj + j;
+                    if(dx >= 0 && dx < n && dy >= 0 && dy < n)
+                    {
+                        if(A[ii][jj] && B[dx][dy])
+                        {
+                            ++tmp;
+                        }
+                    }
+                }
+            }
+            res = max(res, tmp);
+        }
+    }
+
+    return res;
+}
+
+int main()
+{
+    vector<vector<int>> A = {
+        {1, 1, 0},
+        {0, 1, 0},
+        {0, 1, 0}
+    };
+    vector<vector<int>> B = {
+        {0, 0, 0},
+        {0, 1, 1},
+        {0, 0, 1}
+    };
+    cout << solution(A, B) << endl;
+    return 0;
+}
